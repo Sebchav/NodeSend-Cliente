@@ -1,8 +1,9 @@
 import { useReducer } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
+import clienteAxios from "../../config/axios";
 
-import { USUARIO_AUTENTICADO } from "../../types";
+import { REGISTRO_EXITOSO, REGISTRO_ERROR, LIMPIAR_ALERTA } from "../../types";
 
 const AuthState = ({children})=>{
 
@@ -18,8 +19,27 @@ const AuthState = ({children})=>{
     const [ state, dispatch ] = useReducer(authReducer, initialState);
 
     // Registrar nuevos usuarios
-    const registrarUsuario = datos => {
-        console.log(datos)
+    const registrarUsuario = async datos => {
+        try{
+            const respuesta = await clienteAxios.post("/api/usuarios", datos);
+            dispatch({
+                type: REGISTRO_EXITOSO,
+                payload: respuesta.data.msg
+            });
+
+        }catch(error){
+            dispatch({
+                type: REGISTRO_ERROR,
+                payload: error.response.data.msg
+            })
+        }
+
+        //limpia la alerta despues de 3 seg
+        setTimeout(()=> {
+            dispatch({
+                type: LIMPIAR_ALERTA
+            })
+        }, 3000)
     }
 
     // Usuario autenticado
