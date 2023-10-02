@@ -1,8 +1,23 @@
 import { Layout } from "../components/Layout"
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { useContext, useEffect } from "react";
+import authContext from "../context/auth/authContext";
+import Alerta from "../components/Alerta";
+import { useRouter } from "next/router";
 
 export default function Login() {
+
+    const AuthContext =useContext(authContext);
+    const { iniciarSesion, mensaje, autenticado } = AuthContext;
+
+    const router = useRouter();
+
+    useEffect(()=>{
+        if(autenticado){
+            router.push("/")
+        }
+    }, [autenticado])
 
   const formik = useFormik({
     initialValues: {
@@ -15,7 +30,7 @@ export default function Login() {
 
     }),
     onSubmit: valores =>{
-        console.log(valores);
+        iniciarSesion(valores);
     }
   })
 
@@ -25,6 +40,8 @@ export default function Login() {
             <h2 className='text-4xl font-sans font-bold text-gray-800 text-center my-4'>
                 Inicia Sesión
             </h2>
+
+            {mensaje && <Alerta />}
 
             <div className='flex justify-center mt-5'>
                 <div className='max-w-lg w-full'>
