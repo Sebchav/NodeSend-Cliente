@@ -4,7 +4,11 @@ import clienteAxios from "../config/axios"
 
 const Dropzone = () => {
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone();
+  const onDrop = useCallback((acceptedFiles)=>{
+    console.log(acceptedFiles);
+  });
+
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({onDrop});
 
   return (
     <div className="md:flex-1 mb-3 mx-2 mt-16 lg:mt-0 flex flex-col items-center justify-center border-dashed boder-gray-400 border-2 bg-gray-100 px-4">
