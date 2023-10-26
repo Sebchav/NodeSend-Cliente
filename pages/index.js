@@ -28,8 +28,8 @@ export default function Home() {
                 Así que puedes mantener lo que compartes en privado y asegurarte de que tus cosas no permanezas en línea para siempre.
               </p>
 
-              <Link href="/crearcuenta">
-                <a className="text-red-500 font-bold text-lg hover:text-red-700">Crea una cuenta para mayores beneficios</a>
+              <Link className="text-red-500 font-bold text-lg hover:text-red-700" href="/crearcuenta">
+                Crea una cuenta para mayores beneficios
               </Link>
             </div>
           </div>
