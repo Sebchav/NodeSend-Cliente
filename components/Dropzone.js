@@ -1,10 +1,14 @@
 import { useDropzone } from "react-dropzone"
-import React, {useState, useCallback} from "react"
+import React, {useCallback} from "react"
 import clienteAxios from "../config/axios"
 
 const Dropzone = () => {
 
-  const onDrop = useCallback(async(acceptedFiles)=>{
+  const onDropRejected = ()=>{
+    console.log("No se pudo subir")
+  }
+
+  const onDropAccepted = useCallback(async(acceptedFiles)=>{
     console.log(acceptedFiles);
 
     const formData = new FormData();
@@ -14,7 +18,7 @@ const Dropzone = () => {
     console.log(resultado);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({onDrop});
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({onDropAccepted, onDropRejected, maxSize: 1000000});
 
   const archivos = acceptedFiles.map( archivo => (
     <li key={archivo.lastModified} className="bg-white flex-1 p-3 mb-4 shadow-lg rounded">
@@ -27,7 +31,6 @@ const Dropzone = () => {
     console.log("Creando el enlace")
   }
     
-
   return (
     <div className="md:flex-1 mb-3 mx-2 mt-16 lg:mt-0 flex flex-col items-center justify-center border-dashed boder-gray-400 border-2 bg-gray-100 px-4">
 
