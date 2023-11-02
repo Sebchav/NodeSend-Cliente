@@ -1,21 +1,24 @@
 import { useDropzone } from "react-dropzone"
 import React, {useCallback} from "react"
 import clienteAxios from "../config/axios"
+import { useContext } from "react"
+import appContext from "../context/app/appContext"
 
 const Dropzone = () => {
 
+  const AppContext = useContext(appContext);
+
+  const { cargando, mostrarAlerta, subirArchivo, crearEnlace } = AppContext;
+
   const onDropRejected = ()=>{
-    console.log("No se pudo subir")
+    mostrarAlerta("No se pudo subir, el limite es 1MB, obten una cuenta gratis para subir archivos más grandes");
   }
 
   const onDropAccepted = useCallback(async(acceptedFiles)=>{
-    console.log(acceptedFiles);
-
     const formData = new FormData();
     formData.append("archivo", acceptedFiles[0]);
 
-    const resultado = await clienteAxios.post("/api/archivos", formData);
-    console.log(resultado);
+    subirArchivo(formData, acceptedFiles[0].path);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({onDropAccepted, onDropRejected, maxSize: 1000000});
@@ -27,10 +30,6 @@ const Dropzone = () => {
     </li>
   ));
 
-  const crearEnlace = ()=> {
-    console.log("Creando el enlace")
-  }
-    
   return (
     <div className="md:flex-1 mb-3 mx-2 mt-16 lg:mt-0 flex flex-col items-center justify-center border-dashed boder-gray-400 border-2 bg-gray-100 px-4">
 
@@ -40,12 +39,15 @@ const Dropzone = () => {
                    <ul>
                       {archivos}
                   </ul>
+                  
+                  { cargando ? <p className="my-10 text-center text-gray-600">Subiendo Archivo...</p> : (
+                       <button
+                       type="button"
+                       className="bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800"
+                       onClick={ ()=> crearEnlace() }
+                     >Crear enlace</button>
+                  )}
 
-                  <button
-                    type="button"
-                    className="bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800"
-                    onClick={ ()=> crearEnlace() }
-                  >Crear enlace</button>
              </div>
         ) : (
             <div {...getRootProps({className: "dropzone w-full py-32"})}>
