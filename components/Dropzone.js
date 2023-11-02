@@ -63,7 +63,6 @@ const Dropzone = () => {
                 </div>
               }
               
-          
           </div>
         )}
        

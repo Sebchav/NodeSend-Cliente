@@ -19,7 +19,11 @@ const AppState = ({ children })=> {
         mensaje_archivo : null,
         nombre: "",
         nombre_original: "",
-        cargando: null
+        cargando: null,
+        descargas: 1,
+        password: "",
+        autor: null,
+        url: ""
     }
 
     // Crear dispatch y state
@@ -67,8 +71,24 @@ const AppState = ({ children })=> {
     }
 
     // Crea un enlace una vez se subio el archivo
-    const crearEnlace = ()=> {
-        console.log("Creando el enlace")
+    const crearEnlace = async()=> {
+        const data = {
+            nombre: state.nombre,
+            nombre_original: state.nombre_original,
+            descargas: state.descargas,
+            password: state.password,
+            autor: state.autor
+        }
+
+        try{
+            const resultado = await clienteAxios.post("/api/enlaces", data);
+            dispatch({
+                type: CREAR_ENLACE_EXITO,
+                payload: resultado.data.msg
+            })
+        }catch(error){
+            console.log(error);
+        }
     }
 
     return (
@@ -78,6 +98,10 @@ const AppState = ({ children })=> {
                 nombre: state.nombre,
                 nombreOriginal: state.nombre_original,
                 cargando: state.cargando,
+                descargas: state.descargas,
+                password: state.password,
+                autor: state.autor,
+                url: state.url,
                 mostrarAlerta,
                 subirArchivo, 
                 crearEnlace
