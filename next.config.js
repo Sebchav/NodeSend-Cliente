@@ -7,7 +7,7 @@ const nextConfig = {
 module.exports = nextConfig
 module.exports = {
   env: {
-    backendURL: "http://localhost:4000",
-    frontendURL: "http://localhost:3000"
+    backendURL: "http://127.0.0.1:4000",
+    frontendURL: "http://127.0.0.1:3000"
   }
 }
