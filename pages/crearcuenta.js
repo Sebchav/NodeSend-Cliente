@@ -50,7 +50,7 @@ const CrearCuenta = () => {
                                 className='block text-black text-sm font-bold mb-2'
                                 htmlFor='nombre'
                             >
-                                Nombre
+                                Nombres
                             </label>
                             <input 
                                     type='text'
